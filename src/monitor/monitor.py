@@ -9,6 +9,7 @@ class MonitorTask:
     interval: int
     cpu_percent: list[float]
     num_cores: int
+    ram_stats:object
 
     def __init__(self) -> None:
         """
@@ -21,10 +22,13 @@ class MonitorTask:
         self.num_cores = psutil.cpu_count(logical=False)
         self.cpu_percent = [0] * self.num_cores
 
+        self.ram_stats=psutil.virtual_memory()
+
     def monitor(self):
         """Continuously monitor and store the result in an attribute."""
         while True:
             self.cpu_percent = psutil.cpu_percent(percpu=True)
+            self.virtual_memory=psutil.virtual_memory()
             time.sleep(self.interval)
 
     def __str__(self) -> str:
